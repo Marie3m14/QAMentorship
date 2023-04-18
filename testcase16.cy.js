@@ -1,4 +1,4 @@
-  describe("Login operation and accessing Profile", () => {
+  describe("Login operation and accessing user recommended needs", () => {
     //Start of Login Request:
     it("Login Request with post method", () => {
 
@@ -21,7 +21,7 @@
           var myVal=response.body.jwt;
             cy.request({
               method:'GET', 
-              url:'https://iwanttohelp.bim.assistcloud.services/volunteers/api/v1/profile',
+              url:'https://iwanttohelp.bim.assistcloud.services/volunteers/api/v1/charts/user_recomended_needs',
               headers:{
                 Authorization: "Bearer " + myVal,
                 accept: 'application/json'
