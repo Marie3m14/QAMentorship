@@ -1,7 +1,6 @@
-  describe("Login operation and accessing user recommended needs", () => {
+  describe("Create need, View need, Delete need", () => {
     //Start of Login Request:
     it("Login Request with post method", () => {
-
       cy.request({
         method:'POST', 
         url:'https://iwanttohelp.bim.assistcloud.services/auth/signin',
@@ -20,21 +19,31 @@
           // Subsequent Request with Token from Login:
           var myVal=response.body.jwt;
           // Next, define the object for creating a need:
-          var obj="{\"contact_first_name\": \"Mary\",\"contact_last_name\": \"MI\",\"contact_phone_number\": \"0766303737\",\"category\": \"others\",\"description\": \"abc\",\"address\": {\"street_name\": \"Oituz\",\"details\": \"mansarda\",\"county\": \"Suceava\",\"city\": \"Suceavaa\",\"postal_code\": \"765765\"}}"
-         //Launching the Request for creating a new recommended need:
-         cy.request({
-              method:'GET', 
+            var obj = {
+            "contact_first_name": "Mary",
+            "contact_last_name": "MI",
+            "contact_phone_number": "0766303737",
+            "category": "others",
+            "description": "abc",
+            "address": {
+                "street_name": "Oituz",
+                "details": "mansarda",
+                "county": "Suceava",
+                "city": "Suceavaa",
+                "postal_code": "765765"
+              }
+            };
+            cy.request({
+              method:'POST', 
               url:'https://iwanttohelp.bim.assistcloud.services/volunteers/api/v1/recommended_needs',
               headers:{
                 Authorization: "Bearer " + myVal,
                 accept: 'application/json'
               },
-              body:{
-                obj
-              }
+              body: obj
             })
               .then(function(response){
-                expect(response.status).to.equal(200);
+                expect(response.status).to.equal(201);
                 var myNewID = response.body.need.id
                 // Next, view the newly created need:
                 cy.request({
@@ -61,7 +70,7 @@
                     }
                   })
                     .then(function(response){
-                      expect(response.status).to.equal(200);
+                      expect(response.status).to.equal(204);
                       //var myNewID = response.body.need.id
                     });
                 // Done deleting the newly created need
